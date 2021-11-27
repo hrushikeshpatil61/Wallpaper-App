@@ -1,7 +1,7 @@
 package com.gtappdevelopers.wallpaperapp;
 
 public class CategoryRVModal {
-    //creating variaable fot category and image url  on below line.
+
     private String category;
     private String imgUrl;
 

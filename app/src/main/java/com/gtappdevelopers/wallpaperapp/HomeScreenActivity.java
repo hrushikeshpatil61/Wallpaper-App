@@ -1,13 +1,20 @@
 package com.gtappdevelopers.wallpaperapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,13 +45,62 @@ public class HomeScreenActivity extends AppCompatActivity implements CategoryRVA
     private WallpaperRVAdapter wallpaperRVAdapter;
     private EditText searchEdt;
     private ImageView searchIV;
-
+    NavigationView nav;
+    ActionBarDrawerToggle toggle;
+    DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         //initializing all variables on below line.
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        nav=(NavigationView)findViewById(R.id.navmenu);
+        drawerLayout=(DrawerLayout)findViewById(R.id.drawer);
+        toggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open,R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
+            {
+                int itemId = menuItem.getItemId();
+                if (itemId == R.id.idcategories) {
+                    Toast.makeText(getApplicationContext(), "all categories are Open", Toast.LENGTH_SHORT).show();
+                    drawerLayout.closeDrawer(GravityCompat.START);
+
+                } else if (itemId == R.id.idfavorite) {
+                    Toast.makeText(getApplicationContext(), "All fevorites photos opened", Toast.LENGTH_SHORT).show();
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else if (itemId == R.id.idshareapp) {
+                    Toast.makeText(getApplicationContext(), "Share This Application", Toast.LENGTH_SHORT).show();
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_SEND);
+                    intent.putExtra(Intent.EXTRA_TEXT, "Download the application from playstore.");
+                    intent.setType("text/plain");
+                    Intent secintent = Intent.createChooser(intent, null);
+                    startActivity(secintent);
+                } else if (itemId == R.id.idrateus) {
+                    Toast.makeText(getApplicationContext(), "Rate Us on play Store", Toast.LENGTH_SHORT).show();
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else if (itemId == R.id.idexitapp) {
+                    Toast.makeText(getApplicationContext(), "app will be closed", Toast.LENGTH_SHORT).show();
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    finish();
+                    System.exit(0);
+                }
+
+                return true;
+            }
+        });
+
+
+
+
         categoryRV = findViewById(R.id.idRVCategories);
         wallpaperRV = findViewById(R.id.idRVWallpapers);
         searchEdt = findViewById(R.id.idEdtSearch);
@@ -127,7 +184,7 @@ public class HomeScreenActivity extends AppCompatActivity implements CategoryRVA
             public Map<String, String> getHeaders() {
                 //in this method passing headers as key along with value as API keys.
                 HashMap<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Enter API Key");
+                headers.put("Authorization", "563492ad6f9170000100000176cfb682d5804c458acfca32436e4e70");
                 //at last returning headers.
                 return headers;
             }
@@ -177,7 +234,7 @@ public class HomeScreenActivity extends AppCompatActivity implements CategoryRVA
             public Map<String, String> getHeaders() {
                 //in this method passing headers as key along with value as API keys.
                 HashMap<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Enter API Key");
+                headers.put("Authorization", "563492ad6f9170000100000176cfb682d5804c458acfca32436e4e70");
                 //at last returning headers.
                 return headers;
             }
